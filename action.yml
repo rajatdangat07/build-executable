@@ -1,13 +1,13 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Build Executable'
+description: 'Combine frontend and backed of track app into one executable'
 inputs:
-  who-to-greet: #id of input
-    description: 'Who to greet'
+  pat: #id of input
+    description: 'Personal Access Token'
     required: true
-    default: 'World'
+    default: ''
   outputs:
-    time:
-      description: 'The time we greeted you'
+    distPath:
+      description: 'The path of dist directory'
 runs:
   using: 'node12'
   main: 'dist/index.js'
