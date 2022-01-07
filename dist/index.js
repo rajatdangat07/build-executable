@@ -64,7 +64,7 @@ function run() {
             core.info('Backend repository clone DONE');
             core.info('Execute npm install in backend repo STARTED');
             {
-                const { stderr } = yield exec('cd ./tmp/backend/build && npm --loglevel error install');
+                const { stderr } = yield exec('cd ./tmp/backend && npm --loglevel error install');
                 if (stderr) {
                     core.error('Execute npm install in backend repo FAILED');
                     core.setFailed(stderr);

@@ -43,7 +43,7 @@ async function run(): Promise<void> {
     core.info('Execute npm install in backend repo STARTED');
     {
       const {stderr} = await exec(
-        'cd ./tmp/backend/build && npm --loglevel error install'
+        'cd ./tmp/backend && npm --loglevel error install'
       );
 
       if (stderr) {
