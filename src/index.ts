@@ -1,8 +1,9 @@
-import {promisify} from 'util';
 import * as core from '@actions/core';
+import {exec as execSync} from 'child_process';
+import {promisify} from 'util';
 import clone from 'git-clone/promise';
 
-const exec = promisify(require('child_process').exec);
+const exec = promisify(execSync);
 
 async function run(): Promise<void> {
   try {
@@ -23,7 +24,7 @@ async function run(): Promise<void> {
         'cd ./tmp/frontend && npm install && npm run build'
       );
 
-      if (stderr && stderr instanceof Error) {
+      if (stderr) {
         core.error('Executing npm build script in frontend repo FAILED');
         core.setFailed(stderr);
       }
@@ -45,7 +46,7 @@ async function run(): Promise<void> {
         'cp -frp ./tmp/frontend/dist -T ./tmp/backend/build'
       );
 
-      if (stderr && stderr instanceof Error) {
+      if (stderr) {
         core.error('Copy frontend build folder to backend FAILED');
         core.setFailed(stderr);
       }
@@ -56,7 +57,7 @@ async function run(): Promise<void> {
     {
       const {stderr} = await exec('npm i pkg -g');
 
-      if (stderr && stderr instanceof Error) {
+      if (stderr) {
         core.error('Install pkg library FAILED');
         core.setFailed(stderr);
       }
@@ -71,7 +72,7 @@ async function run(): Promise<void> {
         `cd ./tmp/backend && pkg --compress GZip --out-path ./${distFolderName} .`
       );
 
-      if (stderr && stderr instanceof Error) {
+      if (stderr) {
         core.error('bundle code FAILED');
         core.setFailed(stderr);
       }
