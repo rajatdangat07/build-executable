@@ -52,7 +52,7 @@ function run() {
             core.info('Frontend repository clone DONE');
             core.info('Executing npm build script in frontend repo');
             {
-                const { stderr } = yield exec('cd ./tmp/frontend && npm install && npm run build');
+                const { stderr } = yield exec('cd ./tmp/frontend && npm --loglevel error install && npm --loglevel error run build');
                 if (stderr) {
                     core.error('Executing npm build script in frontend repo FAILED');
                     core.setFailed(stderr);
@@ -62,6 +62,15 @@ function run() {
             core.info('Backend repository clone STARTED');
             yield (0, promise_1.default)(`https://${pat}@github.com/thingsup/ColdChainServer.git`, './tmp/backend');
             core.info('Backend repository clone DONE');
+            core.info('Execute npm install in backend repo STARTED');
+            {
+                const { stderr } = yield exec('cd ./tmp/backend/build && npm --loglevel error install');
+                if (stderr) {
+                    core.error('Execute npm install in backend repo FAILED');
+                    core.setFailed(stderr);
+                }
+            }
+            core.info('Execute npm install in backend repo DONE');
             core.info('Copy frontend build folder to backend STARTED');
             {
                 const { stderr } = yield exec('cp -frp ./tmp/frontend/dist -T ./tmp/backend/build');

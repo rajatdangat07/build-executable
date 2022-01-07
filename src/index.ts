@@ -21,7 +21,7 @@ async function run(): Promise<void> {
     core.info('Executing npm build script in frontend repo');
     {
       const {stderr} = await exec(
-        'cd ./tmp/frontend && npm install && npm run build'
+        'cd ./tmp/frontend && npm --loglevel error install && npm --loglevel error run build'
       );
 
       if (stderr) {
@@ -39,6 +39,19 @@ async function run(): Promise<void> {
     );
 
     core.info('Backend repository clone DONE');
+
+    core.info('Execute npm install in backend repo STARTED');
+    {
+      const {stderr} = await exec(
+        'cd ./tmp/backend/build && npm --loglevel error install'
+      );
+
+      if (stderr) {
+        core.error('Execute npm install in backend repo FAILED');
+        core.setFailed(stderr);
+      }
+    }
+    core.info('Execute npm install in backend repo DONE');
 
     core.info('Copy frontend build folder to backend STARTED');
     {
